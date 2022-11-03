@@ -7,6 +7,7 @@ export const ping = (req: Request, res: Response) =>{
     res.json({pong:true})
 }
 
+
 export const random = (req: Request, res: Response)=>{
     let nRand: number = Math.floor(Math.random() * 10)
     res.json({number: nRand})
@@ -73,4 +74,18 @@ export const randomPhrase = async (req: Request, res: Response) => {
     }else{
         res.json({erron: 'Não há frases cadastradas'})
     }
+}
+
+export const uploadFile = async (req: Request, res: Response) => {
+
+    type uploadType = {
+        avatar: Express.Multer.File[]
+        gallery: Express.Multer.File[]
+    }
+
+    const files = req.files as uploadType
+
+    // const files = req.files as {[fieldname: string]: Express.Multer.File[]}
+    
+    res.json({})
 }
