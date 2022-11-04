@@ -34,10 +34,7 @@ router.get('/frases/:id', apiController.getPhrase)
 router.put('/frases/:id', apiController.updatePhrase)
 router.delete('/frases/:id', apiController.deletePhrase)
 
-router.post('/upload', upload.fields([
-    {name: 'avatar', maxCount: 1},
-    {name: 'gallery', maxCount: 2}
-]), apiController.uploadFile)
+router.post('/upload', upload.single('avatar'), apiController.uploadFile)
 
 
 

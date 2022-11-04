@@ -1,6 +1,8 @@
 import {Response, Request} from 'express';
 import { Sequelize } from 'sequelize';
+import sharp from 'sharp';
 import { Phrase } from '../models/phrase';
+import { unlink } from 'fs/promises';
 
 
 export const ping = (req: Request, res: Response) =>{
@@ -78,12 +80,18 @@ export const randomPhrase = async (req: Request, res: Response) => {
 
 export const uploadFile = async (req: Request, res: Response) => {
 
-    type uploadType = {
-        avatar: Express.Multer.File[]
-        gallery: Express.Multer.File[]
-    }
+    if(req.file){
+        await sharp(req.file.path)
+                .resize(500)
+                .toFormat('jpeg')
+                .toFile(`./public/media/${req.file.filename}.jpg`)
 
-    const files = req.files as uploadType
+        await unlink(req.file.path)
+        res.json({image: `${req.file.filename}`})
+    }else{
+        res.status(400)
+        res.json({error: 'Arquivo inválido.'})
+    }
 
     // const files = req.files as {[fieldname: string]: Express.Multer.File[]}
     
